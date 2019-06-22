@@ -38,8 +38,8 @@ def get_all():
         return(str(e))
 
 
+#@login_required
 @app.route("/add/form", methods=['GET', 'POST'])
-@login_required
 def add_user_form():
     if request.method == 'POST':
         username = request.form.get('username')

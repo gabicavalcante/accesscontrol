@@ -1,7 +1,14 @@
 from app import db
-from hashlib import sha256, sha1
+from app import login
 
-class User(db.Model):
+from hashlib import sha256, sha1
+from flask_login import UserMixin
+
+@login.user_loader
+def load_user(id):
+    return User.query.get(int(id))
+    
+class User(UserMixin, db.Model):
     __tablename__ = 'users'
 
     id = db.Column(db.Integer, primary_key=True)

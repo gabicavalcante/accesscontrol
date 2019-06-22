@@ -1,4 +1,5 @@
 from app import db
+from hashlib import sha256, sha1
 
 class User(db.Model):
     __tablename__ = 'users'
@@ -16,6 +17,14 @@ class User(db.Model):
     def __repr__(self):
         return '<id {}>'.format(self.id)
     
+    @staticmethod
+    def generate_hash(password):
+        return sha1(password.encode('utf-8')).hexdigest()
+
+    @staticmethod
+    def verify_hash(password, hash):
+        return sha1(password.encode('utf-8')).hexdigest() == hash
+
     def serialize(self):
         return {
             'id': self.id, 

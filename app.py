@@ -62,8 +62,9 @@ def add_user_form():
 @app.route("/doorcontrol", methods=['GET', 'POST'])
 @login_required
 def doorcontrol(): 
-    if request.method == 'POST':
-        print(request.form.data)
+    if request.method == 'POST': 
+        current_status = request.form.get('status') 
+        return 'Close' if current_status == 'Open' else 'Open'
     return render_template("doorcontrol.html")
 
 

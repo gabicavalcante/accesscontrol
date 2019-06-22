@@ -16,7 +16,7 @@ app.config.from_object(os.environ['APP_SETTINGS'])
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 db = SQLAlchemy(app)
 
-from models import User
+from models import User, Device, Door
 
 @app.errorhandler(404)
 def page_not_found(e):
@@ -24,22 +24,39 @@ def page_not_found(e):
     return render_template('404.html'), 404
 
 @app.errorhandler(401)
-def page_not_found(e):
+def unauthorized_access(e):
     # note that we set the 404 status explicitly
     return render_template('401.html'), 401
 
-@app.route("/getall")
+@app.route("/getall/users")
 @login_required
-def get_all():
+def get_all_users():
     try:
         users = User.query.all()
         return jsonify([u.serialize() for u in users])
     except Exception as e:
         return(str(e))
 
+@app.route("/getall/devices")
+@login_required
+def get_all_devices():
+    try:
+        devices = Device.query.all()
+        return jsonify([d.serialize() for d in devices])
+    except Exception as e:
+        return(str(e))
+
+@app.route("/getall/doors")
+@login_required
+def get_all_doors():
+    try:
+        doors = Door.query.all()
+        return jsonify([d.serialize() for d in doors])
+    except Exception as e:
+        return(str(e))
 
 #@login_required
-@app.route("/add/form", methods=['GET', 'POST'])
+@app.route("/add/user", methods=['GET', 'POST'])
 def add_user_form():
     if request.method == 'POST':
         username = request.form.get('username')
@@ -58,6 +75,41 @@ def add_user_form():
             return(str(e))
     return render_template("create_user.html")
 
+@app.route("/add/device", methods=['GET', 'POST'])
+@login_required
+def add_device_form():
+    if request.method == 'POST':
+        name = request.form.get('name')
+
+        try:
+            device = Device(
+                name=name
+            )
+            db.session.add(device)
+            db.session.commit()
+            return "Device added. device id={}".format(device.id)
+        except Exception as e:
+            return(str(e))
+    return render_template("create_device.html")
+
+@app.route("/add/door", methods=['GET', 'POST'])
+@login_required
+def add_door_form():
+    if request.method == 'POST':
+        name = request.form.get('name')
+        status = request.form.get('status') == 'on'
+
+        try:
+            door = Door(
+                name=name,
+                status=status
+            )
+            db.session.add(door)
+            db.session.commit()
+            return "Door added. door id={}".format(door.id)
+        except Exception as e:
+            return(str(e))
+    return render_template("create_door.html")
 
 @app.route("/doorcontrol", methods=['GET', 'POST'])
 @login_required

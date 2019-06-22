@@ -39,3 +39,42 @@ class User(UserMixin, db.Model):
             'username': self.username,
             'password': self.password
         }
+
+class Device(db.Model):
+    __tablename__ = 'devices'
+
+    id = db.Column(db.Integer, primary_key=True)
+    name = db.Column(db.String())
+
+    def __init__(self, name):
+        self.name = name
+
+    def __repr__(self):
+        return '<id {}>'.format(self.id)
+
+    def serialize(self):
+        return {
+            'id': self.id, 
+            'name': self.name
+        }
+
+class Door(db.Model):
+    __tablename__ = 'doors'
+
+    id = db.Column(db.Integer, primary_key=True)
+    name = db.Column(db.String())
+    status = db.Column(db.Boolean())
+
+    def __init__(self, name, status):
+        self.name = name
+        self.status = status
+
+    def __repr__(self):
+        return '<id {}>'.format(self.id)
+
+    def serialize(self):
+        return {
+            'id': self.id, 
+            'name': self.name,
+            'status' : self.status
+        }

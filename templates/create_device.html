@@ -1,0 +1,70 @@
+{% extends "base.html" %} {% block content %}
+<div class="container">
+  <br />
+  <br />
+
+  <div class="row align-items-center justify-content-center">
+    <h1>Add a Device</h1>
+  </div>
+  <br />
+
+  <form method="POST">
+    <label for="name">Door ID</label>
+    <div class="form-row">
+      <input
+        class="form-control"
+        type="text"
+        placeholder="Door ID"
+        id="device_id"
+        name="device_id"
+      />
+    </div>
+    <br />
+
+    <label for="status">Door TYPE</label>
+    <div class="form-row">
+      <input
+        class="form-control"
+        type="text"
+        placeholder="Door TYPE"
+        id="device_type"
+        name="device_type"
+      />
+    </div>
+    <br />
+
+    <label for="status">Description</label>
+    <div class="form-row">
+      <input
+        class="form-control"
+        type="text"
+        placeholder="Description"
+        id="description"
+        name="description"
+      />
+    </div>
+    <br />
+ 
+    <div class="form-row">
+      <p><strong>Status: </strong><span class="status">Open</span></p>
+      <br />
+      <label class="label-switch switch-primary">
+        <input
+          type="checkbox"
+          class="switch switch-bootstrap"
+          name="status"
+          id="status"
+          value="1"
+          checked="checked"
+        />
+        <span class="lable"></span>
+      </label>
+    </div>
+    <br />
+    <button type="submit" class="btn btn-primary " style="float:right ">
+      Submit
+    </button>
+  </form>
+  <br /><br />
+</div>
+{% endblock %}

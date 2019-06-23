@@ -1,56 +1,70 @@
-<!DOCTYPE html>
-<html lang="en">
+{% extends "base.html" %} {% block content %}
+<div class="container">
+  <br />
+  <br />
 
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Document</title>
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO"
-        crossorigin="anonymous">
-</head>
+  <div class="row align-items-center justify-content-center">
+    <h1>Add a Device</h1>
+  </div>
+  <br />
 
-<body>
-    <div class="container">
-
-        <div class="container">
-            <br>
-            <br>
-
-            <div class="row align-items-center justify-content-center">
-                <h1>Add a Device</h1>
-            </div>
-            <br>
-
-            <form method="POST">
-
-                <label for="name">Door ID</label>
-                <div class="form-row">
-                    <input class="form-control" type="text" placeholder="Door name" id="name" name="name">
-                </div>
-                <br>
-
-                <label for="status">Door TYPE</label>
-                <div class="form-row">
-                    <input type="text" id="status" name="status">
-                </div>
-
-                <label for="status">Door STATUS</label>
-                <div class="form-row">
-                    <input type="checkbox" id="status" name="status">
-                </div>
-                <br>
-                <button type="submit" class="btn btn-primary " style="float:right ">Submit</button>
-            
-            </form>
-            <br><br>
-        </div>
+  <form method="POST">
+    <label for="name">Door ID</label>
+    <div class="form-row">
+      <input
+        class="form-control"
+        type="text"
+        placeholder="Door ID"
+        id="device_id"
+        name="device_id"
+      />
     </div>
+    <br />
 
-    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js " integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo "
-        crossorigin="anonymous "></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js " integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49 "
-        crossorigin="anonymous "></script>
-    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js " integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy "
-        crossorigin="anonymous "></script>
-</body>
+    <label for="status">Door TYPE</label>
+    <div class="form-row">
+      <input
+        class="form-control"
+        type="text"
+        placeholder="Door TYPE"
+        id="device_type"
+        name="device_type"
+      />
+    </div>
+    <br />
+
+    <label for="status">Description</label>
+    <div class="form-row">
+      <input
+        class="form-control"
+        type="text"
+        placeholder="Description"
+        id="description"
+        name="description"
+      />
+    </div>
+    <br />
+ 
+    <div class="form-row">
+      <p><strong>Status: </strong><span class="status">Open</span></p>
+      <br />
+      <label class="label-switch switch-primary">
+        <input
+          type="checkbox"
+          class="switch switch-bootstrap"
+          name="status"
+          id="status"
+          value="1"
+          checked="checked"
+        />
+        <span class="lable"></span>
+      </label>
+    </div>
+    <br />
+    <button type="submit" class="btn btn-primary " style="float:right ">
+      Submit
+    </button>
+  </form>
+  <br /><br />
+</div>
+{% endblock %}

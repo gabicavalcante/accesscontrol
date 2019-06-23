@@ -3,7 +3,7 @@ from os.path import join, dirname
 
 from flask import Flask, request, jsonify, render_template, flash, redirect, url_for
 from flask_sqlalchemy import SQLAlchemy
-from flask_login import current_user, login_user, LoginManager, login_required
+from flask_login import current_user, login_user, LoginManager, login_required, logout_user
 
 app = Flask(__name__)
 login = LoginManager(app)
@@ -27,6 +27,10 @@ def page_not_found(e):
 def unauthorized_access(e):
     # note that we set the 404 status explicitly
     return render_template('401.html'), 401
+
+@app.route("/")
+def index():
+    return redirect(url_for('login'))
 
 @app.route("/getall/users")
 @login_required
@@ -71,10 +75,9 @@ def add_user_form():
 def add_device_form():
     if request.method == 'POST':
         device_id = request.form.get('device_id')
-        device_type = request.form.get('device_id')
+        device_type = request.form.get('device_type')
         description = request.form.get('description')
-        status = request.form.get('status')
-
+        status = bool(request.form.get('status')) 
         try:
             device = Device(
                 device_id=device_id,
@@ -120,6 +123,10 @@ def login():
             return redirect(url_for('login'))
     return render_template("login.html")
 
+@app.route('/logout')
+def logout():
+    logout_user()
+    return redirect(url_for('index'))
 
 if __name__ == '__main__':
     app.run()

@@ -46,7 +46,7 @@ class Device(db.Model):
     id = db.Column(db.Integer, primary_key=True) 
     device_id = db.Column(db.String())
     device_type = db.Column(db.String())
-    dscription = db.Column(db.String())
+    description = db.Column(db.String())
     status = db.Column(db.Boolean())
 
     def __init__(self, device_id, device_type, description, status):

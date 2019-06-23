@@ -7,7 +7,7 @@ from flask_login import UserMixin
 @login.user_loader
 def load_user(id):
     return User.query.get(int(id))
-    
+
 class User(UserMixin, db.Model):
     __tablename__ = 'users'
 
@@ -43,30 +43,16 @@ class User(UserMixin, db.Model):
 class Device(db.Model):
     __tablename__ = 'devices'
 
-    id = db.Column(db.Integer, primary_key=True)
-    name = db.Column(db.String())
-
-    def __init__(self, name):
-        self.name = name
-
-    def __repr__(self):
-        return '<id {}>'.format(self.id)
-
-    def serialize(self):
-        return {
-            'id': self.id, 
-            'name': self.name
-        }
-
-class Door(db.Model):
-    __tablename__ = 'doors'
-
-    id = db.Column(db.Integer, primary_key=True)
-    name = db.Column(db.String())
+    id = db.Column(db.Integer, primary_key=True) 
+    device_id = db.Column(db.String())
+    device_type = db.Column(db.String())
+    dscription = db.Column(db.String())
     status = db.Column(db.Boolean())
 
-    def __init__(self, name, status):
-        self.name = name
+    def __init__(self, device_id, device_type, description, status):
+        self.device_id = device_id
+        self.device_type = device_type
+        self.description = description
         self.status = status
 
     def __repr__(self):
@@ -75,6 +61,8 @@ class Door(db.Model):
     def serialize(self):
         return {
             'id': self.id, 
-            'name': self.name,
+            'device_id': self.device_id,
+            'device_type': self.device_type, 
+            'description': self.description,
             'status' : self.status
         }

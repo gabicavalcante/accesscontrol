@@ -16,7 +16,7 @@ app.config.from_object(os.environ['APP_SETTINGS'])
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 db = SQLAlchemy(app)
 
-from models import User, Device, Door
+from models import User, Device
 
 @app.errorhandler(404)
 def page_not_found(e):
@@ -46,15 +46,6 @@ def get_all_devices():
     except Exception as e:
         return(str(e))
 
-@app.route("/getall/doors")
-@login_required
-def get_all_doors():
-    try:
-        doors = Door.query.all()
-        return jsonify([d.serialize() for d in doors])
-    except Exception as e:
-        return(str(e))
-
 #@login_required
 @app.route("/add/user", methods=['GET', 'POST'])
 def add_user_form():
@@ -79,11 +70,17 @@ def add_user_form():
 @login_required
 def add_device_form():
     if request.method == 'POST':
-        name = request.form.get('name')
+        device_id = request.form.get('device_id')
+        device_type = request.form.get('device_id')
+        description = request.form.get('description')
+        status = request.form.get('status')
 
         try:
             device = Device(
-                name=name
+                device_id=device_id,
+                device_type=device_type,
+                description=description,
+                status=status
             )
             db.session.add(device)
             db.session.commit()
@@ -91,25 +88,6 @@ def add_device_form():
         except Exception as e:
             return(str(e))
     return render_template("create_device.html")
-
-@app.route("/add/door", methods=['GET', 'POST'])
-@login_required
-def add_door_form():
-    if request.method == 'POST':
-        name = request.form.get('name')
-        status = request.form.get('status') == 'on'
-
-        try:
-            door = Door(
-                name=name,
-                status=status
-            )
-            db.session.add(door)
-            db.session.commit()
-            return "Door added. door id={}".format(door.id)
-        except Exception as e:
-            return(str(e))
-    return render_template("create_door.html")
 
 @app.route("/doorcontrol", methods=['GET', 'POST'])
 @login_required

@@ -1,0 +1,8 @@
+{
+  "id": "[DEVICE_ID]",
+  "type": "[DEVICE_TYPE]",
+  "status": {
+    "type": "Boolean",
+    "value": "true"
+  }
+}

@@ -45,8 +45,8 @@ def get_all_users():
 @login_required
 def get_all_devices():
     try:
-        devices = Device.query.all()
-        return jsonify([d.serialize() for d in devices])
+        devices = Device.query.order_by(Device.device_id.asc()).all()
+        return render_template('devices_list.html', devices=devices)
     except Exception as e:
         return(str(e))
 
@@ -87,24 +87,29 @@ def add_device_form():
             )
             db.session.add(device)
             db.session.commit()
-            return "Device added. device id={}".format(device.id)
+            return render_template("create_device.html")
         except Exception as e:
             return(str(e))
     return render_template("create_device.html")
 
-@app.route("/doorcontrol", methods=['GET', 'POST'])
+@app.route("/doorcontrol", methods=['POST'])
 @login_required
-def doorcontrol(): 
-    if request.method == 'POST': 
-        current_status = request.form.get('status') 
-        return 'Close' if current_status == 'Open' else 'Open'
-    return render_template("doorcontrol.html")
+def doorcontrol():  
+    device_status = True if request.form.get('status') == 'true' else False
+    device_id = request.form.get('device_id') 
+    
+    device = Device.query.filter_by(device_id=device_id).first()
+    if device:
+        device.status = device_status
+        db.session.commit()
+    return "sucess"
+    
 
 
 @app.route("/login", methods=['GET', 'POST'])
 def login():
     if current_user.is_authenticated:
-        return redirect(url_for('add_user_form'))
+        return redirect(url_for('get_all_devices'))
 
     if request.method == 'POST':
         email = request.form.get('email')
@@ -114,7 +119,7 @@ def login():
             user = User.query.filter_by(email=email).first() 
             if User.verify_hash(password, user.password):
                 login_user(user, remember=True)
-                return redirect(url_for('add_user_form'))
+                return redirect(url_for('get_all_devices'))
             else:
                 flash('Invalid username or password')
                 return redirect(url_for('login'))

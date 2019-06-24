@@ -1,0 +1,56 @@
+{% extends "base.html" %} {% block content %}
+    <div class="container">
+      <br /><br />
+
+      <div class="row align-items-center justify-content-center">
+        <h1>Lista de Dispositivos</h1>
+      </div>
+
+      <br />
+
+      <table class="table">
+        <thead>
+          <tr> 
+            <th scope="col">ID</th>
+            <th scope="col">TIPO</th>
+            <th scope="col">DESCRIÇÃO</th>
+            <th scope="col">STATUS</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for d in devices %}
+          <tr> 
+            <td>{{ d.device_id }}</td>
+            <td>{{ d.device_type }}</td>
+            <td>{{ d.description if d.description else "" }}</td> 
+            <td> 
+              <label class="label-switch switch-primary">
+                  {% if d.status %}
+                    <input
+                      type="checkbox"
+                      class="switch switch-bootstrap"
+                      name="status"
+                      id="status"
+                      value="{{ d.device_id }}"
+                      checked="checked"
+                    />
+                    {% else %}
+                    <input
+                      type="checkbox"
+                      class="switch switch-bootstrap"
+                      name="status"
+                      id="status"
+                      value="{{ d.device_id }}"
+                    />
+                  {% endif %}
+                  <span class="lable"></span>
+                </label>
+            </td>
+          </tr>
+        </tbody>
+        {% endfor %}
+      </table>
+
+      <br /><br />
+    </div>
+{% endblock %}

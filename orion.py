@@ -64,7 +64,7 @@ def get_entities_by_id(entity_id):
 
     logging.info("Response: ")
     logging.info(json.dumps(response, indent=4))
-
+    return response
 
 def get_entities_by_type(entity_type):
     logging.info("Getting entities by type '{}'".format(entity_type))

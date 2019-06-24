@@ -56,7 +56,12 @@ class Device(db.Model):
         self.status = status
 
     def __repr__(self):
-        return '<id {}>'.format(self.id)
+        return '<id {}, device_id {}, device_type {}, status {}>'.format(
+            self.id,
+            self.device_id,
+            self.device_type,
+            self.status
+            )
 
     def serialize(self):
         return {

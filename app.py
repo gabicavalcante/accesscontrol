@@ -58,7 +58,7 @@ def get_all_devices():
         devices = []
         for device in devices_db: 
             device_id = device.device_id 
-            entity = orion.get_entities_by_id(device_id)
+            #entity = orion.get_entities_by_id(device_id)
             if entity: 
                 info = { 
                     'device_id': entity.get('id'),
@@ -101,7 +101,7 @@ def add_device_form():
         status = bool(request.form.get('status')) 
 
         ## ORION
-        orion.register_entity(data, device_type, device_id, '0.0.0.0:4000')
+        #orion.register_entity(data, device_type, device_id, '0.0.0.0:4000')
         try:
             device = Device(
                 device_id=device_id,
@@ -127,7 +127,7 @@ def doorcontrol():
     if device:
         device.status = device_status
         db.session.commit()
-        orion.update_context(device.device_id, device.device_type, status)
+        #orion.update_context(device.device_id, device.device_type, status)
     return "sucess"
     
 

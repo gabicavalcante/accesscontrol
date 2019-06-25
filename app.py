@@ -1,3 +1,22 @@
+Skip to content
+ 
+Search or jump to…
+
+Pull requests
+Issues
+Marketplace
+Explore
+ 
+@I-am-Gabi 
+1
+0 0 I-am-Gabi/accesscontrol
+ Code  Issues 0  Pull requests 0  Projects 0  Wiki  Security  Insights  Settings
+accesscontrol/app.py
+@I-am-Gabi I-am-Gabi add devices list
+4badb01 2 days ago
+@I-am-Gabi @jotaves
+138 lines (116 sloc)  4.06 KB
+    
 import os
 from os.path import join, dirname
 
@@ -15,15 +34,6 @@ load_dotenv(dotenv_path)
 app.config.from_object(os.environ['APP_SETTINGS'])
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 db = SQLAlchemy(app)
-
-from utils import read_config_file
-import orion
-import json 
-
-config = read_config_file('config.ini')
-with open(config.get('device_schema_path')) as json_file:
-    data = json.load(json_file)
-orion.init(config.get('orion_host'), config.get('orion_port'))
 
 from models import User, Device
 
@@ -54,19 +64,7 @@ def get_all_users():
 @login_required
 def get_all_devices():
     try:
-        devices_db = Device.query.order_by(Device.device_id.asc()).all()
-        devices = []
-        for device in devices_db: 
-            device_id = device.device_id 
-            #entity = orion.get_entities_by_id(device_id)
-            if entity: 
-                info = { 
-                    'device_id': entity.get('id'),
-                    'device_type': entity.get('type'),
-                    'description': device.description,
-                    'status': True if entity.get('status').get('value') == 'true' else False,
-                }
-                devices.append(info)
+        devices = Device.query.order_by(Device.device_id.asc()).all()
         return render_template('devices_list.html', devices=devices)
     except Exception as e:
         return(str(e))
@@ -99,9 +97,6 @@ def add_device_form():
         device_type = request.form.get('device_type')
         description = request.form.get('description')
         status = bool(request.form.get('status')) 
-
-        ## ORION
-        #orion.register_entity(data, device_type, device_id, '0.0.0.0:4000')
         try:
             device = Device(
                 device_id=device_id,
@@ -119,15 +114,13 @@ def add_device_form():
 @app.route("/doorcontrol", methods=['POST'])
 @login_required
 def doorcontrol():  
-    status = request.form.get('status')
-    device_status = True if status == 'true' else False
+    device_status = True if request.form.get('status') == 'true' else False
     device_id = request.form.get('device_id') 
     
     device = Device.query.filter_by(device_id=device_id).first()
     if device:
         device.status = device_status
         db.session.commit()
-        #orion.update_context(device.device_id, device.device_type, status)
     return "sucess"
     
 

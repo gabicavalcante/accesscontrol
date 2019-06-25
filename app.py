@@ -1,22 +1,3 @@
-Skip to content
- 
-Search or jump to…
-
-Pull requests
-Issues
-Marketplace
-Explore
- 
-@I-am-Gabi 
-1
-0 0 I-am-Gabi/accesscontrol
- Code  Issues 0  Pull requests 0  Projects 0  Wiki  Security  Insights  Settings
-accesscontrol/app.py
-@I-am-Gabi I-am-Gabi add devices list
-4badb01 2 days ago
-@I-am-Gabi @jotaves
-138 lines (116 sloc)  4.06 KB
-    
 import os
 from os.path import join, dirname
 
